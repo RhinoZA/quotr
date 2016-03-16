@@ -1,16 +1,29 @@
-var elixir = require('laravel-elixir');
+process.env.DISABLE_NOTIFIER = true;
 
-/*
- |--------------------------------------------------------------------------
- | Elixir Asset Management
- |--------------------------------------------------------------------------
- |
- | Elixir provides a clean, fluent API for defining some basic Gulp tasks
- | for your Laravel application. By default, we are compiling the Sass
- | file for our application, as well as publishing vendor resources.
- |
- */
+var elixir = require('laravel-elixir');
+var gulp = require('gulp');
 
 elixir(function(mix) {
-    mix.sass('app.scss');
+
+ //mix.phpUnit();
+
+ mix
+ 	 .copy('bower_components/jquery/dist/jquery.js', 'public/assets/js/jquery.js')
+     .copy('bower_components/semantic/dist/semantic.js', 'public/assets/js/semantic.js')
+     .copy('bower_components/semantic/dist/semantic.css', 'public/assets/css/semantic.css')
+     .sass([
+        'main.scss',
+     ], 'public/assets/css')
+     .version([
+        'public/assets/css/main.css',
+        'public/assets/js/semantic.js',
+        'public/assets/css/semantic.css',
+     ])
+ ;
+
+});
+
+gulp.task('fonts', function() {
+ gulp.src(['bower_components/semantic-ui/dist/themes/default/assets/fonts/**/*'])
+     .pipe(gulp.dest('public/build/assets/css/themes/default/assets/fonts'));
 });
